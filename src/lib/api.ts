@@ -6,7 +6,7 @@
  * @Description  :
  */
 
-import type BotResult from '../models/BotResult';
+import type {BotResult} from './models/BotResult';
 
 export async function getBotStatus(
 	botNames: string = 'ASF',

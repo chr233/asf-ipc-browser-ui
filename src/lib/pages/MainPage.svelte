@@ -2,53 +2,56 @@
 	import { onMount } from 'svelte';
 	import type { TabData } from '$lib/models/TabData';
 	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import TabViewer from '$lib/components/TabViewer.svelte';
 	import TabSelector from '$lib/components/TabSelector.svelte';
 
-	let tabs: TabData[] = $state([{ id: 'test', title: '测试', url: 'https://www.baidu.com' }]);
+	import { tabs, activeTabId } from '$lib/stores/tabStore';
+	import TabAbout from '$lib/components/TabAbout.svelte';
 
-	let activeTabId: string | undefined = $state(undefined);
+	onMount(() => {});
 
-	onMount(() => {
-		console.log('onMount called');
-		activeTabId = 'test';
-	});
-
-	function onOpenTab(id: string, title: string, url: string) {
-		if (tabs.some((tab) => tab.id === id)) {
-			activeTabId = id;
+	function onOpenTab(id: string, title: string, startUrl: string) {
+		if ($tabs.some((tab) => tab.id === id)) {
+			$activeTabId = id;
 			return;
 		}
 
-		const newTab = { id, title, url };
+		const newTab = { id, title, startUrl };
 		console.log(newTab);
 
-		tabs.push(newTab);
-		activeTabId = id;
+		$tabs = [...$tabs, newTab];
+		$activeTabId = id;
 	}
 
 	function onTabClick(id?: string) {
-		activeTabId = id || undefined;
+		$activeTabId = id || '-HOME-';
 	}
 
 	function onTabClose(id?: string) {
-		tabs = tabs.filter((tab) => tab.id !== id);
-		if (activeTabId === id) {
-			activeTabId = undefined;
+		$tabs = $tabs.filter((tab) => tab.id !== id);
+		if ($activeTabId === id) {
+			$activeTabId = '-HOME-';
 		}
 	}
-
-	let currentId = 0;
 </script>
 
-<Header {tabs} {activeTabId} {onTabClick} {onTabClose} />
+<Header {onTabClick} {onTabClose} />
 
-<div class="flex h-[calc(100vh-3rem)] flex-col md:flex-row">
-	{#if activeTabId === undefined}
-		<TabSelector {onOpenTab} />
-	{:else}
-		{#each tabs.filter((t) => t.id === activeTabId) as tab}
-			<TabViewer startUrl="http://localhost:2500/Proxy/aaaa1111/flzhi67642/https/steamcommunity.com/443/" />
-		{/each}
-	{/if}
+<div class="flex flex-col flex-1 w-full h-full bg-green-300 py-13">
+	<div class="flex-1 h-0">
+		{#if $activeTabId === '-HOME-'}
+			<TabSelector {onOpenTab} />
+		{:else if $activeTabId === '-ABOUT-'}
+			<TabAbout />
+		{:else}
+			{#each $tabs as tab (tab.id)}
+				<div class="flex flex-col flex-1 h-full bg-gray-300" class:hidden={tab.id !== $activeTabId}>
+					<TabViewer startUrl={tab.startUrl} />
+				</div>
+			{/each}
+		{/if}
+	</div>
 </div>
+
+<Footer />

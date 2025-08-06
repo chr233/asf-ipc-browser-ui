@@ -18,7 +18,7 @@ export interface Result {
 	[botName: string]: BotDetail;
 }
 
-export interface BotResult {
+export interface IpcGetBotsResponse  {
 	Result: Result;
 	Message: string;
 	Success: boolean;

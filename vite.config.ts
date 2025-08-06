@@ -9,15 +9,15 @@ export default defineConfig({
 		port: 8688,
 		proxy: {
 			'/Api': {
-				target: 'http://localhost:2500',
+				target: 'http://100.105.249.10:2500',
 				changeOrigin: true
 			},
 			'/Proxy': {
-				target: 'http://localhost:2500',
-				changeOrigin: true
+				target: 'http://100.105.249.10:2500',
+				changeOrigin: false
 			},
 			'/swagger': {
-				target: 'http://localhost:2500',
+				target: 'http://100.105.249.10:2500',
 				changeOrigin: true
 			}
 		}

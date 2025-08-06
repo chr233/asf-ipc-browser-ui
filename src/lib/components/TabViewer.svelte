@@ -4,6 +4,7 @@
 		ArrowLeftOutline,
 		ArrowRightOutline,
 		RefreshOutline,
+		GlobeOutline,
 		ArrowUpRightFromSquareOutline
 	} from 'flowbite-svelte-icons';
 
@@ -13,55 +14,68 @@
 	let { startUrl }: Props = $props();
 
 	let iframeRef: HTMLIFrameElement;
+
 	let url: string = $state(startUrl);
 
-	function onBack() {
+	function goBack() {
 		iframeRef?.contentWindow?.history.back();
 	}
-	function onForward() {
+	function goForward() {
 		iframeRef?.contentWindow?.history.forward();
 	}
-	function onReload() {
+	function reloadPage() {
 		iframeRef?.contentWindow?.location.reload();
 	}
-	function onOpen() {
+	function openNewTab() {
 		window.open(url, '_blank');
 	}
-	function onUrlInput(e: Event) {
-		url = (e.target as HTMLInputElement).value;
-		iframeRef?.setAttribute('src', url);
+	function gotoUrl() {
+		try {
+			iframeRef?.setAttribute('src', url);
+		} catch (error) {
+			console.error(error);
+			iframeRef.src = url;
+		}
 	}
 	function onIframeLoad() {
 		try {
 			const currentUrl = iframeRef?.contentWindow?.location.href;
 			if (currentUrl) url = currentUrl;
-		} catch {
-			// 跨域时无法获取
+		} catch (error) {
+			console.error(error);
+			console.error('无法获取 iframe 信息');
 		}
 	}
 </script>
 
-<div class="flex h-full w-full flex-col p-4">
-	<div class="mb-4 flex items-center space-x-2">
-		<Button size="xs" class="rounded" onclick={onBack}>
+<div class="flex flex-col flex-1 w-full h-full p-3">
+	<div class="flex items-center mb-2 space-x-2">
+		<Button size="xs" class="rounded" onclick={goBack}>
 			<ArrowLeftOutline />
 		</Button>
-		<Button size="xs" class="rounded" onclick={onForward}>
+		<Button size="xs" class="rounded" onclick={goForward}>
 			<ArrowRightOutline />
 		</Button>
-		<Button size="xs" class="rounded" onclick={onReload}>
+		<Button size="xs" class="rounded" onclick={reloadPage}>
 			<RefreshOutline />
 		</Button>
-		<Input size="md" type="text" bind:value={url} onchange={onUrlInput} />
-		<Button size="xs" class="rounded" onclick={onOpen}>
+		<Input size="md" type="text" bind:value={url} />
+		<Button size="xs" class="rounded" onclick={gotoUrl}>
+			<GlobeOutline />
+		</Button>
+		<Button size="xs" class="rounded" onclick={openNewTab}>
 			<ArrowUpRightFromSquareOutline />
 		</Button>
 	</div>
 
-	<iframe
-		class="w-full flex-1 rounded border"
-		bind:this={iframeRef}
-		src={url}
-		on:load={onIframeLoad}
-	></iframe>
+	<div class="flex-1 h-0 border border-gray-300 rounded">
+		<iframe
+			title=""
+			class="w-full h-full "
+			bind:this={iframeRef}
+			src={url}
+			onload={onIframeLoad}
+		>
+		</iframe>
+	</div>
 </div>

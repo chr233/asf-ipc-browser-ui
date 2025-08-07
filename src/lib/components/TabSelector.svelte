@@ -10,6 +10,7 @@
 		TableBodyCell,
 		TableBodyRow,
 		TableHead,
+		Toggle,
 		TableHeadCell,
 		Skeleton,
 		TableSearch
@@ -31,6 +32,7 @@
 
 	let botListFilter = $state('');
 	let botsList: BotDetail[] = $state([]);
+	let openInNewWindow: boolean = $state(false);
 
 	let filteredBots = $derived.by(() => {
 		if (!botListFilter) {
@@ -101,7 +103,7 @@
 		}
 	}
 
-	async function openViewerTab(botName: string) {
+	async function openViewerTab(botName: string, nickName: string) {
 		try {
 			ipcLoading = true;
 
@@ -114,7 +116,12 @@
 			}
 
 			const startUrl = response.Result;
-			onOpenTab(botName, botName, startUrl);
+
+			if (!openInNewWindow) {
+				onOpenTab(botName, nickName, startUrl);
+			} else {
+				window.open(startUrl, '_blank');
+			}
 		} catch (err) {
 			console.error(err);
 		} finally {
@@ -127,14 +134,18 @@
 	});
 </script>
 
-<div class="w-full p-4 mx-auto space-y-4 bg-transparent">
+<div class="w-full p-4 mx-auto space-y-4">
 	<label class="block mb-2 font-medium" for="ipc">IPC 密码</label>
 	<Input type="text" id="ipc" placeholder="请输入IPC密码" bind:value={ipcPassword} clearable />
 
 	<label class="block mb-2 font-medium" for="url">起始页</label>
 	<Input type="url" id="url" placeholder="要访问的网址" bind:value={defaultUrl} clearable />
 
-	<Button class="w-full" onclick={reloadBots}>刷新机器人列表</Button>
+	<div class="flex w-full space-x-2">
+		<Button onclick={reloadBots}>刷新机器人列表</Button>
+		<span class="flex-1"></span>
+		<Toggle size="small" bind:checked={openInNewWindow}>在新窗口中打开</Toggle>
+	</div>
 
 	<label class="block mb-2 font-medium" for="password">Bot 列表</label>
 
@@ -190,7 +201,7 @@
 								<Button
 									size="xs"
 									onclick={() => {
-										openViewerTab(bot.BotName);
+										openViewerTab(bot.BotName, bot.Nickname);
 									}}
 								>
 									浏览

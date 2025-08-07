@@ -9,4 +9,4 @@ import { writable } from 'svelte/store';
 import type { TabData } from '$lib/models/TabData';
 
 export const tabs = writable<TabData[]>([]);
-export const activeTabId = writable<string>("-HOME-");
+export const activeTabId = writable<string>('-HOME-');

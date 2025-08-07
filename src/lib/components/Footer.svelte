@@ -1,20 +1,27 @@
 <script lang="ts">
-	import { Footer, FooterCopyright, FooterLinkGroup, FooterLink } from 'flowbite-svelte';
-	import { activeTabId, tabs } from '$lib/stores/tabStore';
+	import { activeTabId } from '$lib/stores/tabStore';
+	import { DarkMode, Footer, FooterCopyright, FooterLink, FooterLinkGroup } from 'flowbite-svelte';
+	import type { ClassValue } from 'svelte/elements';
 
-
-	function goto(tab:string){
-		$activeTabId = tab;
+	interface Props {
+		class?: ClassValue | undefined | null;
+		onTabClick?: (id?: string) => void;
+		onTabClose?: (id: string) => void;
 	}
 
+	let { class: customClass }: Props = $props();
+
+	function goto(tab: string) {
+		$activeTabId = tab;
+	}
 </script>
 
-<Footer class="fixed bottom-0 left-0 right-0">
-	<FooterCopyright href="/" by="Flowbite™" year={2022} />
-	<FooterLinkGroup
-		class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0 dark:text-gray-400"
-	>
-		<FooterLink href="#" onclick={()=>goto("-HOME-")}>Home</FooterLink>
-		<FooterLink href="#" onclick={()=>goto("-ABOUT-")}>About</FooterLink>
+<Footer class={customClass}>
+	<div class="flex flex-1">
+		<DarkMode />
+	</div>
+	<FooterLinkGroup class="flex items-center text-sm text-gray-500 flex-nowarp dark:text-gray-400">
+		<FooterLink href="#" onclick={() => goto('-HOME-')}>Home</FooterLink>
+		<FooterLink href="#" onclick={() => goto('-ABOUT-')}>About</FooterLink>
 	</FooterLinkGroup>
 </Footer>

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import type { TabData } from '$lib/models/TabData';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import TabViewer from '$lib/components/TabViewer.svelte';
@@ -8,8 +6,6 @@
 
 	import { tabs, activeTabId } from '$lib/stores/tabStore';
 	import TabAbout from '$lib/components/TabAbout.svelte';
-
-	onMount(() => {});
 
 	function onOpenTab(id: string, title: string, startUrl: string) {
 		if ($tabs.some((tab) => tab.id === id)) {
@@ -36,22 +32,24 @@
 	}
 </script>
 
-<Header {onTabClick} {onTabClose} />
+<div
+	class="sticky flex flex-col w-full h-screen text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400"
+>
+	<Header {onTabClick} {onTabClose} class="top-0 left-0 right-0 z-50 flex-none w-full shadow" />
 
-<div class="flex flex-col flex-1 w-full h-full bg-green-300 py-13">
-	<div class="flex-1 h-0">
+	<div class="flex-1">
 		{#if $activeTabId === '-HOME-'}
 			<TabSelector {onOpenTab} />
 		{:else if $activeTabId === '-ABOUT-'}
 			<TabAbout />
 		{:else}
 			{#each $tabs as tab (tab.id)}
-				<div class="flex flex-col flex-1 h-full bg-gray-300" class:hidden={tab.id !== $activeTabId}>
+				<div class="h-full" class:hidden={tab.id !== $activeTabId}>
 					<TabViewer startUrl={tab.startUrl} />
 				</div>
 			{/each}
 		{/if}
 	</div>
-</div>
 
-<Footer />
+	<Footer class="flex" />
+</div>

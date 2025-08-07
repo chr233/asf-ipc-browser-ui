@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, ButtonGroup, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline, CloseOutline, HomeOutline } from 'flowbite-svelte-icons';
+	import { _ } from 'svelte-i18n';
 
 	import { activeTabId, tabs } from '$lib/stores/tabStore';
 	import type { ClassValue } from 'svelte/elements';
@@ -41,7 +42,7 @@
 		<ButtonGroup>
 			<Button
 				pill
-				title="主页"
+				title={$_("home")}
 				color={$activeTabId === '-HOME-' ? 'primary' : 'light'}
 				onclick={() => innerOnTabClick()}
 			>
@@ -64,7 +65,7 @@
 			</ButtonGroup>
 
 			<Button pill color="light" size="sm" class="flex sm:hidden">
-				选择窗口
+				{$_("switchWindow")}
 				<ChevronDownOutline />
 			</Button>
 
@@ -83,7 +84,7 @@
 		<ButtonGroup>
 			<Button
 				pill
-				title="关闭当前窗口"
+				title={$_("closeWindowTitle")}
 				color="light"
 				disabled={$activeTabId.startsWith('-') && $activeTabId.endsWith('-')}
 				onclick={() => innerOnTabClose($activeTabId)}

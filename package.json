@@ -1,9 +1,9 @@
 {
 	"name": "asf-ipc-browser-ui",
 	"private": true,
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"author": "chr233",
-	"description": "123",
+	"description": "ASF IPC Browser UI",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -45,6 +45,7 @@
 		"vite-plugin-devtools-json": "^0.2.0"
 	},
 	"dependencies": {
-		"phosphor-svelte": "^3.0.1"
+		"phosphor-svelte": "^3.0.1",
+		"svelte-i18n": "^4.0.1"
 	}
 }

@@ -1,0 +1,44 @@
+{
+  "title": "ASF IPC 浏览器",
+  "home": "首页",
+  "about": "关于",
+  "changeLanguage": "切换语言",
+  "closeWindowTitle": "关闭当前窗口",
+  "switchWindow": "切换窗口",
+  "aboutPage": {
+    "title": "关于本项目",
+    "project": "名称",
+    "version": "版本",
+    "author": "作者",
+    "description": "简介"
+  },
+  "selectorPage":{
+    "view":"浏览",
+    "online":"在线",
+    "offline":"离线",
+    "start":"上线",
+    "stop":"下线",
+    "botName":"机器人名称",
+    "nickName":"昵称",
+    "steamId":"Steam ID",
+    "operator":"操作",
+    "ipcRequestFailed":"读取机器人信息失败, 请检查 IPC 密码是否正确",
+    "noBotsFound":"没有符合条件的机器人",
+    "botsList":"机器人列表",
+    "reloadBotsList":"重新加载机器人列表",
+    "startPage":"起始页",
+    "startPagePlaceholder":"请输入起始页 URL",
+    "ipcPassword":"IPC 密码",
+    "ipcPasswordPlaceholder":"请输入 IPC 密码",
+    "openInNewWindow":"在新窗口中打开",
+    "botListFilterPlaceholder": "搜索 BotName NickName 或者 SteamId"
+  },
+  "viewerPage": {
+    "goBack": "后退",
+    "goForward": "前进",
+    "reload": "刷新",
+    "locationPlaceholder": "要浏览的网址",
+    "visit":"访问",
+    "openInNewWindow": "在浏览器标签页打开"
+  }
+}

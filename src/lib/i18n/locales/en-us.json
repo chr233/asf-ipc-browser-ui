@@ -1,0 +1,44 @@
+{
+  "title": "ASF IPC BROWSER",
+  "home": "Home",
+  "about": "About",
+  "changeLanguage": "Change Language",
+  "closeWindowTitle": "Close Current Tab",
+  "switchWindow": "Switch Tab",
+  "aboutPage": {
+    "title": "About This Project",
+    "project": "Project Name",
+    "version": "Version",
+    "author": "Author",
+    "description": "Description"
+  },
+  "selectorPage": {
+    "view": "View",
+    "online": "Online",
+    "offline": "Offline",
+    "start": "Start",
+    "stop": "Stop",
+    "botName": "Bot Name",
+    "nickName": "Nickname",
+    "steamId": "Steam ID",
+    "operator": "Operator",
+    "ipcRequestFailed": "Failed to read bot info, please check if the IPC password is correct",
+    "noBotsFound": "No matching bots found",
+    "botsList": "Bot List",
+    "reloadBotsList": "Reload Bot List",
+    "startPage": "Start Page",
+    "startPagePlaceholder": "Please enter the start page URL",
+    "ipcPassword": "IPC Password",
+    "ipcPasswordPlaceholder": "Please enter IPC password",
+    "openInNewWindow": "Open in new window",
+    "botListFilterPlaceholder": "Search BotName, NickName or SteamId"
+  },
+  "viewerPage": {
+    "goBack": "Back",
+    "goForward": "Forward",
+    "reload": "Reload",
+    "locationPlaceholder": "URL to browse",
+    "visit": "Visit",
+    "openInNewWindow": "Open in browser tab"
+  }
+}

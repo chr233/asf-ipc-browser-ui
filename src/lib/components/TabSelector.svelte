@@ -1,19 +1,22 @@
 <script lang="ts">
-	import { getBotStatus, startBots, stopBots, getStartPage } from '$lib/api';
+	import { browser } from '$app/environment';
+	import { getBotStatus, getStartPage, startBots, stopBots } from '$lib/api';
 	import type { BotDetail } from '$lib/models/IpcGetBotsResponse';
+	import { _ } from 'svelte-i18n';
+
 	import {
 		Alert,
 		Button,
 		ButtonGroup,
 		Input,
+		Skeleton,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
 		TableHead,
-		Toggle,
 		TableHeadCell,
-		Skeleton,
-		TableSearch
+		TableSearch,
+		Toggle
 	} from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 	import { onMount } from 'svelte';
@@ -24,8 +27,8 @@
 
 	let { onOpenTab }: Props = $props();
 
-	let ipcPassword: string = $state('test114514');
-	let defaultUrl: string = $state('https://store.steampowered.com/cart/');
+	let ipcPassword: string = $state('');
+	let defaultUrl: string = $state('');
 
 	let ipcMessage: string = $state('');
 	let ipcLoading: boolean = $state(true);
@@ -130,54 +133,90 @@
 	}
 
 	onMount(() => {
+		if (browser) {
+			openInNewWindow = localStorage.getItem('openInNewWindow') === '1';
+			ipcPassword = localStorage.getItem('ipcPassword') || '';
+			defaultUrl = localStorage.getItem('startUrl') || 'https://store.steampowered.com/';
+		}
 		reloadBots();
 	});
+
+	function saveSettings() {
+		if (browser) {
+			localStorage.setItem('openInNewWindow', openInNewWindow ? '1' : '0');
+			localStorage.setItem('ipcPassword', ipcPassword);
+			localStorage.setItem('startUrl', defaultUrl);
+		}
+	}
 </script>
 
-<div class="w-full p-4 mx-auto space-y-4">
-	<label class="block mb-2 font-medium" for="ipc">IPC 密码</label>
-	<Input type="text" id="ipc" placeholder="请输入IPC密码" bind:value={ipcPassword} clearable />
+<div class="w-full h-full p-4 mx-auto space-y-4">
+	<label class="block mb-2 font-medium" for="ipc">{$_("selectorPage.ipcPassword")}</label>
+	<Input
+		type="text"
+		id="ipc"
+		placeholder={$_("selectorPage.ipcPasswordPlaceholder")}
+		bind:value={ipcPassword}
+		clearable
+		oninput={saveSettings}
+	/>
 
-	<label class="block mb-2 font-medium" for="url">起始页</label>
-	<Input type="url" id="url" placeholder="要访问的网址" bind:value={defaultUrl} clearable />
+	<label class="block mb-2 font-medium" for="url">{$_("selectorPage.startPage")}</label>
+	<Input
+		type="url"
+		id="url"
+		placeholder={$_("selectorPage.startPagePlaceholder")}
+		bind:value={defaultUrl}
+		clearable
+		oninput={saveSettings}
+	/>
 
 	<div class="flex w-full space-x-2">
-		<Button onclick={reloadBots}>刷新机器人列表</Button>
+		<Button onclick={reloadBots} loading={ipcLoading}>{$_("selectorPage.reloadBotsList")}</Button>
 		<span class="flex-1"></span>
-		<Toggle size="small" bind:checked={openInNewWindow}>在新窗口中打开</Toggle>
+		<Toggle size="small" bind:checked={openInNewWindow} onchange={saveSettings}
+			>{$_("selectorPage.openInNewWindow")}</Toggle
+		>
 	</div>
 
-	<label class="block mb-2 font-medium" for="password">Bot 列表</label>
+	<label class="block mb-2 font-medium" for="password">{$_("selectorPage.botsList")}</label>
 
 	<TableSearch
 		classes={{ input: 'w-full' }}
-		placeholder="搜索 BotName NickName 或者 SteamId"
-		hoverable
+		placeholder={$_("selectorPage.botListFilterPlaceholder")}
 		bind:inputValue={botListFilter}
 		striped
-	>
+	>	
 		<TableHead>
-			<TableHeadCell>BotName</TableHeadCell>
-			<TableHeadCell>NickName</TableHeadCell>
-			<TableHeadCell>SteamId</TableHeadCell>
-			<TableHeadCell></TableHeadCell>
+			<TableHeadCell>{$_('selectorPage.botName')}</TableHeadCell>
+			<TableHeadCell>{$_('selectorPage.nickName')}</TableHeadCell>
+			<TableHeadCell>{$_('selectorPage.steamId')}</TableHeadCell>
+			<TableHeadCell>{$_('selectorPage.operator')}</TableHeadCell>
 		</TableHead>
 
 		<TableBody>
 			{#if filteredBots.length === 0}
 				<TableBodyRow>
-					<TableBodyCell colspan={3}>
+					<TableBodyCell colspan={4}>
 						{#if ipcLoading}
 							<Skeleton size="md" class="my-8" />
-						{:else}
+						{:else if botsList.length === 0}
 							<Alert color="red">
 								{#snippet icon()}<InfoCircleSolid />{/snippet}
 
 								<div class="space-x-1">
-									<span>读取机器人信息失败, 请检查 IPC 密码是否正确</span>
+									<span>{$_("selectorPage.ipcRequestFailed")}</span>
 									{#if ipcMessage}
 										<span>【{ipcMessage}】</span>
 									{/if}
+								</div>
+							</Alert>
+						{:else}
+							<Alert color="orange">
+								{#snippet icon()}<InfoCircleSolid />{/snippet}
+
+								<div class="space-x-1">
+									<span>{$_("selectorPage.noBotsFound")}</span>
 								</div>
 							</Alert>
 						{/if}
@@ -193,7 +232,7 @@
 							<TableBodyCell>{bot.s_SteamID}</TableBodyCell>
 						{:else}
 							<TableBodyCell>-</TableBodyCell>
-							<TableBodyCell>离线</TableBodyCell>
+							<TableBodyCell>{$_('selectorPage.offline')}</TableBodyCell>
 						{/if}
 
 						<TableBodyCell>
@@ -204,7 +243,7 @@
 										openViewerTab(bot.BotName, bot.Nickname);
 									}}
 								>
-									浏览
+									{$_('selectorPage.view')}
 								</Button>
 
 								{#if bot.IsConnectedAndLoggedOn}
@@ -214,7 +253,7 @@
 											startOrStopBot(bot.BotName, false);
 										}}
 									>
-										下线
+										{$_('selectorPage.stop')}
 									</Button>
 								{:else}
 									<Button
@@ -223,7 +262,7 @@
 											startOrStopBot(bot.BotName, true);
 										}}
 									>
-										上线
+										{$_('selectorPage.start')}
 									</Button>
 								{/if}
 							</ButtonGroup>

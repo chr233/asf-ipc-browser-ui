@@ -2,8 +2,11 @@
 	import MainPage from '$lib/pages/MainPage.svelte';
 	import { initLocale } from '$lib/i18n/index';
 	import { register, init, _ } from 'svelte-i18n';
-	import { Spinner, Card } from 'flowbite-svelte';
+	import { Spinner, Card, Button } from 'flowbite-svelte';
+	import { LinkOutline } from 'flowbite-svelte-icons';
 	const setupResult = initLocale();
+
+	const repoLink = 'https://github.com/chr233/ASF-ipc-browser-ui';
 </script>
 
 {#await setupResult}
@@ -13,13 +16,15 @@
 {:then}
 	<MainPage />
 {:catch error}
-	<Card href="/cards" class="p-4 sm:p-6 md:p-8">
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Noteworthy technology acquisitions 2021
-		</h5>
-		<p class="font-normal leading-tight text-gray-700 dark:text-gray-400">
-			Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
-			chronological order.
-		</p>
-	</Card>
+	<div class="flex items-center justify-center min-h-screen">
+		<Card class="p-6">
+			<h3 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+				初始化出错, 请更新程序
+			</h3>
+			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
+				{error}
+			</p>
+			<Button class="w-fit" href={repoLink}>前往仓库页</Button>
+		</Card>
+	</div>
 {/await}

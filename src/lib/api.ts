@@ -65,11 +65,12 @@ export async function stopBots(
 export async function getStartPage(
 	botName: string,
 	url: string,
-	ipcPassword?: string
+	ipcPassword?: string,
+	realHost?:string
 ): Promise<IpcGetProxyResponse> {
 	const response = await baseRequest<IpcGetProxyResponse>(
 		'GET',
-		`/Api/Proxy/Proxy/${botName}?url=${url}`,
+		`/Api/Proxy/Proxy/${botName}?url=${url}&realHost=${realHost}`,
 		ipcPassword
 	);
 	return response;

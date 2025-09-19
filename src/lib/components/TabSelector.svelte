@@ -110,7 +110,9 @@
 		try {
 			ipcLoading = true;
 
-			var response = await getStartPage(botName, defaultUrl, ipcPassword);
+			const { origin } = location;
+
+			const response = await getStartPage(botName, defaultUrl, ipcPassword, origin);
 
 			if (!response.Success || !response.Result) {
 				console.error(response.Message);
@@ -150,43 +152,43 @@
 	}
 </script>
 
-<div class="w-full h-full p-4 mx-auto space-y-4">
-	<label class="block mb-2 font-medium" for="ipc">{$_("selectorPage.ipcPassword")}</label>
+<div class="mx-auto h-full w-full space-y-4 p-4">
+	<label class="mb-2 block font-medium" for="ipc">{$_('selectorPage.ipcPassword')}</label>
 	<Input
 		type="text"
 		id="ipc"
-		placeholder={$_("selectorPage.ipcPasswordPlaceholder")}
+		placeholder={$_('selectorPage.ipcPasswordPlaceholder')}
 		bind:value={ipcPassword}
 		clearable
 		oninput={saveSettings}
 	/>
 
-	<label class="block mb-2 font-medium" for="url">{$_("selectorPage.startPage")}</label>
+	<label class="mb-2 block font-medium" for="url">{$_('selectorPage.startPage')}</label>
 	<Input
 		type="url"
 		id="url"
-		placeholder={$_("selectorPage.startPagePlaceholder")}
+		placeholder={$_('selectorPage.startPagePlaceholder')}
 		bind:value={defaultUrl}
 		clearable
 		oninput={saveSettings}
 	/>
 
 	<div class="flex w-full space-x-2">
-		<Button onclick={reloadBots} loading={ipcLoading}>{$_("selectorPage.reloadBotsList")}</Button>
+		<Button onclick={reloadBots} loading={ipcLoading}>{$_('selectorPage.reloadBotsList')}</Button>
 		<span class="flex-1"></span>
 		<Toggle size="small" bind:checked={openInNewWindow} onchange={saveSettings}
-			>{$_("selectorPage.openInNewWindow")}</Toggle
+			>{$_('selectorPage.openInNewWindow')}</Toggle
 		>
 	</div>
 
-	<label class="block mb-2 font-medium" for="password">{$_("selectorPage.botsList")}</label>
+	<label class="mb-2 block font-medium" for="password">{$_('selectorPage.botsList')}</label>
 
 	<TableSearch
 		classes={{ input: 'w-full' }}
-		placeholder={$_("selectorPage.botListFilterPlaceholder")}
+		placeholder={$_('selectorPage.botListFilterPlaceholder')}
 		bind:inputValue={botListFilter}
 		striped
-	>	
+	>
 		<TableHead>
 			<TableHeadCell>{$_('selectorPage.botName')}</TableHeadCell>
 			<TableHeadCell>{$_('selectorPage.nickName')}</TableHeadCell>
@@ -205,7 +207,7 @@
 								{#snippet icon()}<InfoCircleSolid />{/snippet}
 
 								<div class="space-x-1">
-									<span>{$_("selectorPage.ipcRequestFailed")}</span>
+									<span>{$_('selectorPage.ipcRequestFailed')}</span>
 									{#if ipcMessage}
 										<span>【{ipcMessage}】</span>
 									{/if}
@@ -216,7 +218,7 @@
 								{#snippet icon()}<InfoCircleSolid />{/snippet}
 
 								<div class="space-x-1">
-									<span>{$_("selectorPage.noBotsFound")}</span>
+									<span>{$_('selectorPage.noBotsFound')}</span>
 								</div>
 							</Alert>
 						{/if}

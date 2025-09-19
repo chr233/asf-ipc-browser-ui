@@ -6,13 +6,13 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(), devtoolsJson()],
 	server: {
-		port: 8688,
+		port: 9642,
 		proxy: {
 			'/Api': {
 				target: 'http://100.105.249.10:2500',
 				changeOrigin: true
 			},
-			'/Proxy': {
+			'/AIBP': {
 				target: 'http://100.105.249.10:2500',
 				changeOrigin: false
 			},

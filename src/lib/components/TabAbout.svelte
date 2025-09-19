@@ -4,17 +4,22 @@
 	import { PACKAGE_INFO } from '$lib/packageInfo';
 	const { name, version, author, description } = PACKAGE_INFO;
 
-	import { Listgroup } from "flowbite-svelte";
-  import { AdjustmentsHorizontalSolid, DownloadSolid, MessagesSolid, UserCircleSolid } from "flowbite-svelte-icons";
-  let icons = [
-    { name: "Profile", Icon: UserCircleSolid },
-    { name: "Settings", Icon: AdjustmentsHorizontalSolid },
-    { name: "Messages", Icon: MessagesSolid },
-    { name: "Download", Icon: DownloadSolid }
-  ];
+	import { Listgroup } from 'flowbite-svelte';
+	import {
+		AdjustmentsHorizontalSolid,
+		DownloadSolid,
+		MessagesSolid,
+		UserCircleSolid
+	} from 'flowbite-svelte-icons';
+	let icons = [
+		{ name: 'Profile', Icon: UserCircleSolid },
+		{ name: 'Settings', Icon: AdjustmentsHorizontalSolid },
+		{ name: 'Messages', Icon: MessagesSolid },
+		{ name: 'Download', Icon: DownloadSolid }
+	];
 </script>
 
-<div class="flex items-center justify-center w-full h-full">
+<div class="flex h-full w-full items-center justify-center">
 	<Card class="p-4 sm:p-6 md:p-8">
 		<h1 class="mb-4 text-2xl font-bold">{$_('aboutPage.title')}</h1>
 		<ul class="space-y-2">

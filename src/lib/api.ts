@@ -70,7 +70,7 @@ export async function getStartPage(
 ): Promise<IpcGetProxyResponse> {
 	const response = await baseRequest<IpcGetProxyResponse>(
 		'GET',
-		`/Api/Proxy/Proxy/${botName}?url=${url}&realHost=${realHost}`,
+		`/Api/Proxy/GetEndpoint/${botName}?url=${url}&realHost=${realHost}`,
 		ipcPassword
 	);
 	return response;

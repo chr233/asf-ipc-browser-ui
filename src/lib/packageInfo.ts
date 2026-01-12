@@ -1,6 +1,6 @@
 export const PACKAGE_INFO = {
-  "author": "chr233",
   "name": "asf-ipc-browser-ui",
+  "version": "1.0.0",
   "description": "ASF IPC Browser UI",
-  "version": "1.0.0"
+  "author": "chr233"
 };

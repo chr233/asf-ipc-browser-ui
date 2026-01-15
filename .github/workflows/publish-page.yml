@@ -13,7 +13,9 @@ permissions:
 
 env:
   PROJECT_NAME: asf-ipc-browser-ui
-  NODE_JS_VERSION: 'lts/*'
+  REPO_NAME: asf-ipc-browser-ui
+  BADGE_NAME: asf--ipc--browser--ui
+  NODE_JS_VERSION: "lts/*"
 
 jobs:
   publish-ui:
@@ -44,7 +46,7 @@ jobs:
           npm run-script build
 
           mkdir dist
-          7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "dist/${{ env.PROJECT_NAME }}.zip" "build/*" 
+          7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "dist/${{ env.PROJECT_NAME }}.zip" "build/*"
 
       - name: Upload
         uses: actions/upload-artifact@v6
@@ -88,7 +90,7 @@ jobs:
           tag: ${{ github.ref_name }}
           name: ${{ env.PROJECT_NAME }} ${{ github.ref_name }}
           body: |
-            ![Release](https://img.shields.io/badge/${{ env.PROJECT_NAME }}-${{ github.ref_name }}-brightgreen) ![Downloads](https://img.shields.io/github/downloads/chr233/${{ env.REPO_NAME }}/${{ github.ref_name }}/total?label=Downloads)
+            ![Release](https://img.shields.io/badge/${{ env.BADGE_NAME }}-${{ github.ref_name }}-brightgreen) ![Downloads](https://img.shields.io/github/downloads/chr233/${{ env.REPO_NAME }}/${{ github.ref_name }}/total?label=Downloads)
 
             ---
 
